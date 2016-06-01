@@ -24,8 +24,15 @@ import { ArtistPipe } from './artist.pipe';
     <cd-display *ngFor="#currentCD of cdList | genreSelect:filterGenre | artistSelect:filterArtist"
       (click)="cdClicked(currentCD)"
       [class.selected]="currentCD === selectedCD"
-      [cd]="currentCD">
+      [cd]="currentCD" [cdList]="cdList">
     </cd-display>
+    <div class="col-md-12 cart">
+      <h2>Shopping Cart</h2>
+      <p>Current Albums in your Cart: </p>
+      <ul>
+        <li *ngFor="#currentCD of soldCDs">{{currentCD.name}}</li>
+      </ul>
+    </div>
   `
 })
 
@@ -37,6 +44,7 @@ export class CDListComponent {
   public artists = [];
   public filterGenre: string = "all";
   public filterArtist: string ="all";
+  public soldCDs: CD[];
 
   constructor() {
     this.onCDSelect = new EventEmitter();
@@ -74,8 +82,17 @@ export class CDListComponent {
        return array.indexOf(value) >-1;
      }
   }
+  getSoldCDs(): void {
+    this.cdList.forEach(function(cd) {
+      if(cd.sold) {
+        this.soldCDs.push(cd);
+      }
+    })
+  }
   public ngOnInit(): any {
     this.getGenres();
     this.getArtists();
+    this.getSoldCDs();
+    console.log(typeof this.soldCDs);
   }
 }
