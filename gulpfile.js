@@ -126,7 +126,6 @@ gulp.task('build', ['ts'], function(){
 });
 
 ////////////////////// SETUP NOTES //////////////////////
-
 /*
 - clone repo
 - npm install

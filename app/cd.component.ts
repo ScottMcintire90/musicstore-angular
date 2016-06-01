@@ -5,11 +5,11 @@ import { CD } from './cd.model';
   selector: 'cd-display',
   inputs: ['cd'],
   template: `
-    <div>
+    <div class="album col-md-4">
       <h3>{{ cd.name }}</h3>
       <ul class="cdList">
         <p><strong>Artist: </strong>{{cd.artist}}</p>
-        <p><strong>Price: </strong>\${{cd.price}}</p>
+        <p [class.expensive]="cd.price >= 20" [class.inexpensive]="cd.price >= 10 && cd.price < 20" [class.moderate]="cd.price < 10"><strong>Price: </strong>\${{cd.price}}</p>
         <p><strong>Genre: </strong>{{cd.genre}}</p>
       </ul>
     </div>
