@@ -22,7 +22,7 @@ export class AppComponent {
       new CD("Abby Road", "The Beatles", 21, "Rock"),
       new CD("Dark Side of the Moon", "Pink Floyd", 18, "Psychedelic Rock"),
       new CD("Slim Shady", "Eminem", 13, "Rap"),
-      new CD("The Chronic", "Dr. Dre", 13, "Rap"),
+      new CD("8 Mile", "Dr.Dre", 13, "Rap"),
       new CD("Best of Beethoven", "Beethoven", 6, "Classical")
     ];
   }
