@@ -44,7 +44,7 @@ export class CDListComponent {
   public artists = [];
   public filterGenre: string = "all";
   public filterArtist: string ="all";
-  public soldCDs: CD[];
+  public soldCDs: CD[] = [new CD("Best of Beethoven", "Beethoven", 6, "Classical")];
 
   constructor() {
     this.onCDSelect = new EventEmitter();
@@ -88,11 +88,12 @@ export class CDListComponent {
         this.soldCDs.push(cd);
       }
     })
+    console.log(this.soldCDs);
   }
   public ngOnInit(): any {
     this.getGenres();
     this.getArtists();
     this.getSoldCDs();
-    console.log(typeof this.soldCDs);
+
   }
 }
