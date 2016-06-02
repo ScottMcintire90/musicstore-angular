@@ -3,12 +3,14 @@ import { CDComponent } from './cd.component';
 import { CD } from './cd.model';
 import { GenrePipe } from './genre.pipe';
 import { ArtistPipe } from './artist.pipe';
+import { NewCDComponent } from './new-cd.component';
+import { EditCDDetailsComponent} from './edit-cd-details.component';
 
 @Component({
   selector: 'cd-list',
   inputs: ['cdList'],
   pipes: [GenrePipe, ArtistPipe],
-  directives: [CDComponent],
+  directives: [CDComponent, NewCDComponent, EditCDDetailsComponent],
   template: `
     <label>Filter By Genre</label>
     <select (change)="onChange($event.target.value)" class="filter">
@@ -26,12 +28,24 @@ import { ArtistPipe } from './artist.pipe';
       [class.selected]="currentCD === selectedCD"
       [cd]="currentCD" [cdList]="cdList">
     </cd-display>
-    <div class="col-md-12 cart">
+    <div class="col-md-6 cart">
       <h2>Shopping Cart</h2>
+      <button (click)="getSoldCDs()" class="btn btn-success">Add Albums to Cart</button>
+      <h3 *ngIf="totalCost > 0">Total Cost: \${{ totalCost }}</h3>
       <p>Current Albums in your Cart: </p>
       <ul>
-        <li *ngFor="#currentCD of soldCDs">{{currentCD.name}}</li>
+        <li *ngFor="#currentCD of soldCDs">{{currentCD.name}} \${{currentCD.price}}</li>
       </ul>
+    </div>
+    <div class="addedit">
+      <div class="col-md-6 addCD">
+        <new-cd (onSubmitNewCD)="createCD($event)">
+        </new-cd>
+      </div>
+      <div class="col-md-6 editCD">
+        <edit-cd-details *ngIf="selectedCD" [cd]="selectedCD">
+        </edit-cd-details>
+      </div>
     </div>
   `
 })
@@ -44,10 +58,14 @@ export class CDListComponent {
   public artists = [];
   public filterGenre: string = "all";
   public filterArtist: string ="all";
-  public soldCDs: CD[] = [new CD("Best of Beethoven", "Beethoven", 6, "Classical")];
+  public soldCDs: CD[] = [];
+  public totalCost: number = 0;
 
   constructor() {
     this.onCDSelect = new EventEmitter();
+  }
+  createCD(cd: CD): void {
+    this.cdList.push(cd);
   }
 
   cdClicked(clickedCD: CD): void {
@@ -83,17 +101,21 @@ export class CDListComponent {
      }
   }
   getSoldCDs(): void {
+    this.soldCDs = [];
+    this.totalCost = 0;
+    var copyThis = this;
     this.cdList.forEach(function(cd) {
       if(cd.sold) {
-        this.soldCDs.push(cd);
+        copyThis.soldCDs.push(cd);
+        copyThis.totalCost+=cd.price;
       }
     })
-    console.log(this.soldCDs);
+
   }
   public ngOnInit(): any {
     this.getGenres();
     this.getArtists();
     this.getSoldCDs();
-
   }
+
 }

@@ -22,6 +22,5 @@ export class CDComponent {
   public cdList: CD[];
   toggleSold(setState: boolean) {
     this.cd.sold = setState;
-    console.log(this.cdList);
   }
 }
